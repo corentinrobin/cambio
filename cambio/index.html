@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <script src="cambio.js"></script>
+        <title>{{ application.title }}</title>
+        <link rel="stylesheet" href="index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <header>
+            <div>{{ application.title }}</div>
+            <div></div>
+        </header>
+
+        <main>
+            <div>
+                <h1>What is Cambio ?</h1>
+
+                <p>Cambio is a JavaScript library that updates in real-time the UI with the application values.</p>
+            </div>
+
+            <div>
+                <h1>How to use it ?</h1>
+
+                <p>Cambio is able to do 4 things: update elements attributes, update text nodes, bind inputs to variables and render templated list items.</p>
+
+                <h2>Syntax</h2>
+
+                <p>
+                    <ul>
+                        <li><code>:variable</code> attribute: binds the specified variable in this attribute to the input</li>
+                        <li><code>:items</code> attribute: specifies what list to render</li>
+                        <li><code>{&#8203;{ ... }&#8203;}</code>: this will be replaced by the evaluation of what is specified inside (variable, short code etc)
+                            <ul>
+                                <li>works in attributes and text nodes</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </p>
+
+                <h2>Attributes</h2>
+
+                <p style="color: {{ application.color }}">
+                    This text style attribute will be changed according to this color: <input type="color" :variable="application.color">
+                </p>
+
+                <h2>Text nodes</h2>
+
+                <p>
+                    Type something here: <input type="text" :variable="application.something">
+                </p>
+
+                <p>
+                    You have just typed "{{ application.something }}".
+                </p>
+
+                <h2>Variable binding</h2>
+
+                <p>
+                    You typed <i>{{ application.something }}</i> above, those inputs are bound to something too:
+
+                    <div><textarea :variable="application.something"></textarea></div>
+                </p>
+
+                <h2>Dynamic variables</h2>
+
+                <p>
+                    You can have dynamic variables, which are constantly evaluated an updated.
+                </p>
+
+                <p>
+                    <code>$cambio_variable</code> will update <code>variable</code>.
+                </p>
+
+                <p>
+                    For example, <code>$cambio_applicationData = "JSON.stringify(application)"</code> will update <code>applicationData</code> with this very application object as a JSON string.
+                    <input type="button" value="Show data" onclick="alert(applicationData)">
+                </p>
+
+                <h2>Raw examples</h2>
+
+                <ul>
+                    <li><a href="examples/spinlaunch.html" target="_blank">SpinLaunch simulator</a>: Calculates tip speed according to launcher parameters.</li>
+                    <li><a href="examples/exhaustive.html" target="_blank">Exhaustive example</a>: All the inputs working with Cambio.</li>
+                </ul>
+
+                <h2>Download</h2>
+
+                <p>
+                    Click here to download Cambio: <a href="http://corentinrobin.com/cambio/cambio.js">cambio.js</a>.
+                </p>
+            </div>
+        </main>
+
+        <footer>
+            <div>Designed and developped by Corentin ROBIN &ndash; <a href="mailto:{{ application.email }}">{{ application.email }}</a></div>
+        </footer>
+
+        <script>
+            var application =
+            {
+                title: "Cambio",
+                email: "corentin.robin@gmail.com",
+                color: "#19B5EC",
+                something: "something",
+            };
+
+            $cambio_applicationData = "JSON.stringify(application)";
+        </script>
+    </body>
+</html>

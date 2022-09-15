@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta cotent="text/html" charset="utf-8">
+        <script src="../cambio.js"></script>
+        <link rel="stylesheet" href="../index.css">
+        <title>SpinLaunch simulator</title>
+    </head>
+
+    <body>
+        <main>
+            <div>
+                <h1>SpinLaunch simulator</h1>
+
+                <div>
+                    Radius: <input type="range" min="1" max="200" :variable="radius"> <input type="number" :variable="radius"> meters
+                </div>
+
+                <div>
+                    Angular speed: <input type="range" min="1" max="500" :variable="angularSpeed"> <input type="number" :variable="angularSpeed"> rotations per second
+                </div>
+
+                <div style="color: {{ tipSpeed < 340 ? 'green' : 'red' }}">
+                    Tip speed: {{ Math.round(tipSpeed) }} m/s = {{ Math.round(tipSpeed * 3.6) }} km/h <i style="display: {{ tipSpeed < 340 ? 'none' : 'block' }}">Supersonic</i>
+                </div>
+
+                <div>
+                    Centripetal acceleration: {{ Math.round(centripetalAcceleration) }} m/s&sup2; =  {{ Math.round(centripetalAcceleration / 9.81) }} g
+                </div>
+            </div>
+        </main>
+        <script>
+            var angularSpeed = 1, radius = 30;
+            var $cambio_tipSpeed = "2 * Math.PI * radius * angularSpeed";
+            var $cambio_centripetalAcceleration = "(tipSpeed * tipSpeed) / radius";
+        </script>
+    </body>
+</html>

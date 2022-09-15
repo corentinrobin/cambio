@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta cotent="text/html" charset="utf-8">
+        <script src="../cambio.js"></script>
+        <link rel="stylesheet" href="../index.css">
+        <title>Exhaustive example</title>
+    </head>
+
+    <body>
+        <main>
+            <div>
+                <h1>Exhaustive example</h1>
+
+                <h2>Text</h2>
+        
+                <div><input type="text" :variable="color"></div>
+                <div><input type="password" :variable="color"></div>
+                <div><textarea :variable="color"></textarea></div>
+        
+                <div>The color you entered is <b style="color: {{ color }}">{{ color }}</b>.</div>
+        
+                <div><input type="color" :variable="color"></div>
+        
+                <h2>Number</h2>
+        
+                <div><input type="text" :variable="number"></div>
+                <div><input type="number" :variable="number"></div>
+                <div><input type="range" :variable="number"></div>
+        
+                <h2>Choice</h2>
+        
+                <div>
+                    <select :variable="landscape" :items="items"></select>
+                </div>
+        
+                <div>You chose {{ landscape }}.</div>
+        
+                <h2>Date</h2>
+        
+                <div><input type="text" :variable="date"></div>
+                <div><input type="date" :variable="date"></div>
+        
+                <h2>Boolean</h2>
+        
+                <div><input type="checkbox" :variable="checked" id="checked"> <label for="checked" style="color: {{ checked ? '#60c383' : '#c36060' }}">{{ checked ? 'Checked! :)' : 'Not checked. :(' }}</label></div>
+
+                <h2>List</h2>
+
+                <div>
+                    <ul :items="list"></ul>
+                </div>
+
+                <cambio-toto :object="toto"></cambio-toto>
+
+                <h2>Dynamic variables</h2>
+
+                <cambio-toto :object="toto"></cambio-toto>
+        
+                <div>The number set above is equal to {{ number }}. This number to the power of 3 is equal to {{ numberPower3 }}.</div>
+                <div><code>$cambio_numberPower3 = "Math.pow(number, 3)";</code> will update <code>numberPower3</code> global variable.</div>
+
+                <cambio-toto :object="toto2"></cambio-toto>
+            </div>
+        </main>
+
+        <script>
+            var items = [{"sea" : "Sea"}, {"forest" : "Forest"}, {"mountain" : "Mountain"}];
+            var list = ["apple", "pear", "banana"];
+            var color = "#000000", number = 12, landscape = "forest", checked = true, date = "2000-12-01";
+
+            var toto = { "title" : "toto", "description" : "ergeioerjg" },
+                toto2 = { "title" : "blablabla", "description" : "blobloblo" };
+
+            var $cambio_numberPower3 = "Math.pow(number, 3)";
+            var $cambio__toto = `<div style="border: solid 1px {{ color }} ; padding: 10px"><b>{{{ title }}}</b><br><i>{{{ description }}}</i></div>`;
+        </script>
+    </body>
+</html>

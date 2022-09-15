@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta cotent="text/html" charset="utf-8">
+        <script src="../cambio.js"></script>
+        <link rel="stylesheet" href="../index.css">
+        <title>Filler text generator</title>
+    </head>
+
+    <body>
+        <main>
+            <div>
+                <h1>Filler text generator</h1>
+
+                <h2>To replace Lorem Ipsum.</h2>
+                
+                <div id="application">
+                    <div>
+                        <div>
+                            <label>Select a language to imitate:</label>
+                            <select :variable="language" :items="languages"></select>
+                        </div>
+        
+                        <div>
+                            <div><label>Min. letters per word:</label> <input type="number" :variable="minimumLetterCountPerWord"></div>
+                            <div><label>Max. letters per word:</label> <input type="number" :variable="maximumLetterCountPerWord"></div>
+                        </div>
+        
+        
+                        <div>
+                            <div><label>Min. words per sentence:</label> <input type="number" :variable="minimumWordCountPerSentence"></div>
+                            <div><label>Max. words per sentence:</label> <input type="number" :variable="maximumWordCountPerSentence"></div>
+                        </div>
+        
+                        <div>
+                            <div><label>Min. sentences per paragraph:</label> <input type="number" :variable="minimumSentenceCountPerParagraph"></div>
+                            <div><label>Max. sentences per paragraph:</label> <input type="number" :variable="maximumSentenceCountPerParagraph"></div>
+                        </div>
+        
+                        <div>
+                            <div><label>Paragraphs:</label> <input type="number" :variable="paragraphCount"></div>
+                        </div>
+        
+                        <div>
+                            <div><input type="button" value="Generate" onclick="generate()"></div>
+                        </div>
+                    </div>
+                    <div><textarea :variable="text"></textarea></div>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            var language = "french",
+                languages = [
+                    {"french" : "French"}, {"english" : "English"}, {"spanish" : "Spanish"},
+                    {"portuguese" : "Portuguese"}, {"russian" : "Russian"}, {"arabic" : "Arabic"},
+                    {"chinese" : "Chinese"}, {"greek" : "Greek"}, {"hindi" : "Hindi"}];
+
+            var minimumLetterCountPerWord = 2, maximumLetterCountPerWord = 7,
+                minimumWordCountPerSentence = 12, maximumWordCountPerSentence = 20
+                minimumSentenceCountPerParagraph = 5, maximumSentenceCountPerParagraph = 7,
+                paragraphCount = 3;
+
+            var text = "Text will land here.";
+
+            // on utilise uniquement les lettres les plus courantes: http://letterfrequency.org/letter-frequency-by-language/
+            // le choix est à la louche, pour que ça ressemble le plus possible à la langue choisie
+
+            var alphabets =
+            {
+                "french" :
+                {
+                    "vowels" : "aeiouaeiouaeiouaeiouaeiouaeiouaeiouyàâéèê",
+                    "consonants" : "stnrldcçmpv"
+                },
+
+                "english" :
+                {
+                    "vowels" : "aeiouy",
+                    "consonants" : "etaoinsrhldcumfpgw"
+                },
+
+                "spanish" :
+                {
+                    "vowels" : "aeiouaeiouaeiouaeiouaeiouaeiouáéíó",
+                    "consonants" : "srnñdlctmpbg"
+                },
+
+                "portuguese" :
+                {
+                    "vowels" : "aeiouaeiouaeiouaeiouaeiouaeiouaeiouãáéóõ",
+                    "consonants" : "srnmdtlcçp"
+                },
+
+                "russian" :
+                {
+                    "vowels" : "аеёиоуыэюя",
+                    "consonants" : "нтсвлркдмпяг"
+                },
+
+                "arabic" :
+                {
+                    "vowels" : "غظضذخثتشرقصفعس",
+                    "consonants" : "نملكيطحزوهدجبأ"
+                },
+
+                // on prend les 400 plus communs ; bien entendu consonnes et voyelles n'ont pas de sens en Chinois : https://learnchinesecharacters.academy/common-chinese-characters/
+                "chinese" :
+                {
+                    "vowels" : "我的你是了不们这一他么在有个好来人那要会就什没到说吗为想能上去道她很看可知得过吧还对里以都事子生时样也和下真现做大啊怎出点起天把开让给但谢着只些如家后儿多意别所话小自回然果发见心走定听觉太该当经妈用打地再因呢女告最手前找行快而死先像等被从明中哦情作跟面诉爱已之问错孩斯成它感干法电间哪西己候次信欢正实关进车年喜认克爸谁方老应比帮无晚动头机分特相全杀需放常直才美于带今力工许东名同长亲种者嘿白学安尔叫理",
+                    "consonants" : "本国第友高两保请非重公记身受住活加何伙题完接拿望解其离谈又新更钱马思部场嗯计任确吃始结利朋警士外件难位表刚希查拉边或将男准变证物员总噢系几管玩处办主气每少切失算性此必备合德队试抱医通体乐并三早门害歉选嗨房命且向兴球服入照提掉夫路演够日案舞决求约字呃肯目笑伤神父指报留水教枪清色号世远片官口师原酒周星识赛救底棒须收交坐停卡尼婚格眼金蛋息室内运根单宝哥张搞战火罗至万声布音期条消买病整奇弟犯装贝您送怕护度"
+                },
+                
+                "greek" :
+                {
+                    "vowels" : "αειου",
+                    "consonants" : "βγδζηθκλμνξπρσςτφχψω"
+                },
+                
+                // https://hindi.swiftutors.com/hindi-basics.html
+                "hindi" :
+                {
+                    "vowels" : "अआइईउऊऋएऐओऔअंअः",
+                    "consonants" : "कखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसहक्षत्रज्ञ"
+                }
+            };
+
+            rand = function(a, b)
+            {
+                return Math.round(Math.random() * (b - a) + a);
+            };
+
+            Array.prototype.randomItem = function()
+            {
+                return this[rand(0, this.length - 1)];
+            }
+
+            randomWord = function()
+            {
+                var length = rand(minimumLetterCountPerWord, maximumLetterCountPerWord);
+                var word = "";
+
+                for(var i = 0; i < length; i++)
+                {
+                    if(i % 2 == 0) word += alphabets[language]["vowels"].split("").randomItem();
+                    else word += alphabets[language]["consonants"].split("").randomItem();
+                }
+
+                return word;
+            };
+
+            randomSentence = function()
+            {
+                var length = rand(minimumWordCountPerSentence, maximumWordCountPerSentence);
+                var punctuation = ".!?";
+                var sentence = "";
+
+                for(var i = 0; i < length; i++)
+                {
+                    sentence += randomWord() + " ";
+                }
+
+                sentence = sentence + punctuation.split("").randomItem();
+
+                sentence = sentence[0].toUpperCase() + sentence.substring(1);;
+
+                return sentence;
+            };
+
+            randomParagraph = function()
+            {
+                var length = rand(minimumSentenceCountPerParagraph, maximumSentenceCountPerParagraph);
+                var paragraph = "";
+
+                for(var i = 0; i < length; i++)
+                {
+                    paragraph += randomSentence() + " ";
+                }
+
+                return paragraph;
+            };
+
+            generate = function()
+            {
+                text = "";
+
+                for(var i = 0; i < paragraphCount; i++)
+                {
+                    text += randomParagraph() + "\n\n";
+                }
+            };
+        </script>
+
+        <style>
+            #application
+            {
+                display: flex;
+            }
+
+            #application > div
+            {
+                flex: 1;
+            }
+
+            #application textarea
+            {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </body>
+</html>
